@@ -1,0 +1,46 @@
+You are given an array piles where piles[i] represents the weight of the i-th pile of goods.
+You are also given an integer days, representing the maximum number of days to ship all the piles.
+You need to find the minimum capacity of a ship such that all the piles can be shipped within the given number of days. 
+The constraints are:
+1. The ship can carry all piles in a contiguous order.
+2. The capacity of the ship determines the maximum weight it can carry in one day.
+
+Solution Explanation
+Problem Requirements:
+
+We need to minimize the capacity of the ship while ensuring that all piles are shipped within the given number of days.
+The capacity must be large enough to handle the heaviest pile (max_element(piles)), and cannot exceed the sum of all piles (sum(piles)).
+Approach:
+
+Use binary search to efficiently find the minimum capacity:
+The lower bound (s) is the heaviest pile.
+The upper bound (e) is the sum of all piles.
+Define a helper function fu to simulate shipping with a given capacity:
+If the number of required days exceeds the allowed days, return false.
+Otherwise, return true.
+Steps:
+
+Initialize the binary search bounds: s as the heaviest pile, and e as the total weight of all piles.
+Perform binary search:
+Calculate mid as the current ship capacity.
+Use fu to check if mid is a valid capacity:
+If fu returns true, reduce the capacity range (e = mid - 1).
+If false, increase the capacity range (s = mid + 1).
+Returning the Result:
+
+At the end of the binary search, s will point to the minimum valid capacity.
+
+
+Complexity Analysis
+Time Complexity:
+
+Binary Search: The range of search is [max_element, sum(piles)], which takes 
+O(log(sum(piles))) iterations.
+Simulation in fu: For each iteration, we iterate through the array, taking 
+O(n) time.
+Total: 
+O(n⋅log(sum(piles))).
+Space Complexity:
+
+The space complexity is 
+O(1) as we are using a constant amount of extra space.
