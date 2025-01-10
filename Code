@@ -1,0 +1,40 @@
+class Solution {
+public:
+    // Function to check if a given ship capacity 'mid' can ship all piles within 'h' days
+    int fu(int mid, vector<int>& piles, int h) {
+        int i = 0;      // Index for iterating through the piles
+        int pens = 0;   // Tracks the current weight loaded on the ship
+        int count = 1;  // Tracks the number of days required
+        while (i < piles.size()) {
+            pens += piles[i];  // Add the current pile to the ship
+            if (pens > mid) {  // If the ship exceeds its capacity
+                count++;       // Increment the day count
+                pens = piles[i]; // Start a new shipment with the current pile
+            }
+            if (count > h)     // If the required days exceed the limit, return false
+                return 0;
+            i++;               // Move to the next pile
+        }
+        return 1;              // Return true if all piles can be shipped within 'h' days
+    }
+
+    int shipWithinDays(vector<int>& piles, int days) {
+        // The minimum capacity is the weight of the heaviest pile
+        int s = *max_element(piles.begin(), piles.end());
+        // The maximum capacity is the sum of all piles
+        int e = accumulate(piles.begin(), piles.end(), 0);
+        int mid = 1; // Midpoint of the current search range
+
+        // Binary search to find the minimum valid capacity
+        while (s <= e) {
+            mid = (s + e) / 2;           // Calculate mid-point
+            int sqr = fu(mid, piles, days); // Check if current mid works as a capacity
+
+            if (sqr == 0)                // If not valid, increase the capacity
+                s = mid + 1;
+            else                         // If valid, try smaller capacities
+                e = mid - 1;
+        }
+        return s;                        // Return the minimum valid capacity
+    }
+};
